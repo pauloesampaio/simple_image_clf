@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from skimage.io import imread
-from tensorflow.image import resize
+from skimage.transform import resize
 from tensorflow.keras.applications.resnet import (ResNet50,
                                                   decode_predictions,
                                                   preprocess_input)
@@ -12,8 +12,9 @@ def download_image(url, target_size=(224, 224)):
     st.image(image, width=224)
     resized_image = resize(image,
                            target_size,
-                           antialias=True)
-    return resized_image.numpy()
+                           preserve_range=True,
+                           anti_aliasing=True)
+    return resized_image
 
 
 def preprocess_image(image):
