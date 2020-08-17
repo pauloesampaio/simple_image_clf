@@ -1,0 +1,1 @@
+web: streamlit run simple_image_clf.py
