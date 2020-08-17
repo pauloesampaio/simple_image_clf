@@ -1,1 +1,1 @@
-web: streamlit run simple_image_clf.py
+web: streamlit run --server.enableCORS false simple_image_clf.py
