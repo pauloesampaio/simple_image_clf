@@ -1,15 +1,16 @@
 import streamlit as st
 import pandas as pd
-from skimage.io import imread
-from tensorflow.image import resize
+import requests
+from tensorflow.image import resize, decode_jpeg
 from tensorflow.keras.applications.resnet import (ResNet50,
                                                   decode_predictions,
                                                   preprocess_input)
 
 
 def download_image(url, target_size=(224, 224)):
-    image = imread(url)
-    st.image(image, width=224)
+    response = requests.get(url)
+    image = decode_jpeg(response.content)
+    st.image(image.numpy(), width=224)
     resized_image = resize(image,
                            target_size,
                            antialias=True)
@@ -31,7 +32,13 @@ def decode_result(prediction):
     return result_dict
 
 
-model = ResNet50()
+@st.cache
+def load_model():
+    model = ResNet50(input_shape=(224, 224, 3))
+    return model
+
+
+model = load_model()
 
 st.write('''
 # Simple image clf
