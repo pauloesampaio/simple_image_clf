@@ -19,6 +19,7 @@ def download_image(url, target_size=(224, 224)):
     """
     response = requests.get(url)
     image = decode_jpeg(response.content)
+    # Display image on streamlit front end
     st.image(image.numpy(), width=224)
     resized_image = resize(image,
                            target_size,
@@ -53,6 +54,7 @@ def decode_result(prediction):
     result_dict = pd.DataFrame(data=[w[2] for w in decoded_prediction[0]],
                                index=[w[1] for w in decoded_prediction[0]],
                                columns=["probability"])
+    # Display prediction result on streamlit front end
     st.write(result_dict)
     return result_dict
 
@@ -74,10 +76,13 @@ def load_model(target_size=(224, 224)):
 if __name__ == "__main__":
     model = load_model()
 
+    # Write title on streamlit front end
     st.write('''
     # Simple image clf
     ## Enter the image url
     ''')
+
+    # Input box on stramlit front end
     url = st.text_input("Enter image url")
     if url:
         current_image = download_image(url)
