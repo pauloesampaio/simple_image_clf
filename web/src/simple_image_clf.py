@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-from tensorflow.image import resize, decode_jpeg
+from tensorflow.image import resize, decode_image
 from tensorflow.keras.applications.resnet import (
     ResNet50,
     decode_predictions,
