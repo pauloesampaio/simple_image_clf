@@ -2,9 +2,11 @@ import streamlit as st
 import pandas as pd
 import requests
 from tensorflow.image import resize, decode_jpeg
-from tensorflow.keras.applications.resnet import (ResNet50,
-                                                  decode_predictions,
-                                                  preprocess_input)
+from tensorflow.keras.applications.resnet import (
+    ResNet50,
+    decode_predictions,
+    preprocess_input,
+)
 
 
 def download_image(url, target_size=(224, 224)):
@@ -21,9 +23,7 @@ def download_image(url, target_size=(224, 224)):
     image = decode_jpeg(response.content)
     # Display image on streamlit front end
     st.image(image.numpy(), width=224)
-    resized_image = resize(image,
-                           target_size,
-                           antialias=True)
+    resized_image = resize(image, target_size, antialias=True)
     return resized_image.numpy()
 
 
@@ -36,7 +36,7 @@ def preprocess_image(image):
     Returns:
         np.array: Image as a numpy array.
     """
-    reshaped_image = image.reshape((1,) + current_image.shape)
+    reshaped_image = image.reshape((1,) + image.shape)
     preprocessed_input = preprocess_input(reshaped_image)
     return preprocessed_input
 
@@ -51,10 +51,12 @@ def decode_result(prediction):
         pd.DataFrame: prediction dataframe with human readable categories.
     """
     decoded_prediction = decode_predictions(prediction)
-    result_dict = pd.DataFrame(data=[w[2] for w in decoded_prediction[0]],
-                               index=[w[1] for w in decoded_prediction[0]],
-                               columns=["probability"])
-    # Display prediction result on streamlit front end
+    result_dict = pd.DataFrame(
+        data=[w[2] for w in decoded_prediction[0]],
+        index=[w[1] for w in decoded_prediction[0]],
+        columns=["probability"],
+    )
+    # Display prediction result on streamlit front end
     st.write(result_dict)
     return result_dict
 
@@ -77,12 +79,14 @@ if __name__ == "__main__":
     model = load_model()
 
     # Write title on streamlit front end
-    st.write('''
+    st.write(
+        """
     # Simple image clf
     ## Enter the image url
-    ''')
+    """
+    )
 
-    # Input box on stramlit front end
+    # Input box on streamlit front end
     url = st.text_input("Enter image url")
     if url:
         current_image = download_image(url)
