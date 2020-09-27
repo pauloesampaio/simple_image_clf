@@ -20,7 +20,7 @@ def download_image(url, target_size=(224, 224)):
         np.array: Image as a numpy array
     """
     response = requests.get(url)
-    image = decode_jpeg(response.content)
+    image = decode_image(response.content)
     # Display image on streamlit front end
     st.image(image.numpy(), width=224)
     resized_image = resize(image, target_size, antialias=True)
@@ -71,7 +71,7 @@ def load_model(target_size=(224, 224)):
     Returns:
         tf.keras.Model: Keras model loaded into memory.
     """
-    model = ResNet50(input_shape=(224, 224, 3))
+    model = ResNet50(input_shape=(target_size + (3,)))
     return model
 
 
